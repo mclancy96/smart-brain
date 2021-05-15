@@ -8,6 +8,7 @@ import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 import SignIn from './components/SignIn/SignIn'
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import Register from './components/Register/Register'
 
 
 const particleOptions = {
@@ -80,15 +81,18 @@ class App extends Component {
           params={particleOptions}
         />
         <Navigation onRouteChange={this.onRouteChange}/>
-        { this.state.route === 'signin' ? 
-          <SignIn onRouteChange={this.onRouteChange}/> :
+        { this.state.route === 'home' ? 
           <div>
             <Logo/>
             <Rank/>
             <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
             <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl}/>
-          </div>
-          
+          </div>:
+          (
+            this.state.route === 'signin' ? 
+            <SignIn onRouteChange={this.onRouteChange}/> :
+            <Register/> 
+          )
         } 
       </div>
     )
