@@ -5,6 +5,7 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import Particles from 'react-particles-js';
+import Clarifai from 'clarifai';
 
 
 const particleOptions = {
@@ -19,6 +20,9 @@ const particleOptions = {
   }
 }
 
+const app = new Clarifai.App({
+  apiKey: 'd12e6783cd344b6b937bb8cfd8806e99'
+})
 
 class App extends Component {
   constructor(){
@@ -32,6 +36,14 @@ class App extends Component {
   }
   onButtonSubmit = () => {
     console.log('click')
+    app.models.predict("c0c0ac362b03416da06ab3fa36fb58e3", "https://samples.clarifai.com/face-det.jpg").then( 
+      (response) => {
+
+      },
+      (err) => {
+
+      }
+    )
   }
   render(){
     return(
