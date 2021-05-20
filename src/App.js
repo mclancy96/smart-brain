@@ -47,6 +47,15 @@ class App extends Component {
     }
   }
 
+  loadUser = (data) => {
+    this.setState({ user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.joined
+    }})
+  }
   componentDidMount(){
     fetch('http://localhost:81')
     .then(res => res.json())
@@ -57,15 +66,7 @@ class App extends Component {
     this.setState({input: event.target.value})
   }
 
-  loadUser = (data) => {
-    this.setState({ user: {
-        id: data.id,
-        name: data.name,
-        email: data.email,
-        entries: data.entries,
-        joined: data.joined
-    }})
-  }
+  
   calculateFaceLocation = (data) => {
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById('inputimage');
@@ -119,21 +120,22 @@ class App extends Component {
   }
 
   render(){
+    const {isSignedIn, imageUrl, route, box} = this.state;
     return(
       <div className="App">
         <Particles className="particles"
           params={particleOptions}
         />
-        <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange}/>
-        { this.state.route === 'home' ? 
+        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
+        { route === 'home' ? 
           <div>
             <Logo/>
             <Rank name={this.state.user.name} entries={this.state.user.entries}/>
             <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
-            <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl}/>
+            <FaceRecognition box={box} imageUrl={imageUrl}/>
           </div>:
           (
-            this.state.route === 'signin' ? 
+            route === 'signin' ? 
             <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange}/> :
             <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/> 
           )
